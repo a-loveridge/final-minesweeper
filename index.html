@@ -1,27 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper</title>
+    <script type="module" src="Javascript/Game.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <h1>Minesweeper</h1>
     <div class="game-select">
         <h2>Select Difficulty:</h2>
-        <button id="easy" class="easy button">Easy</button>
-        <button id="medium" class="medium button">Medium</button>
-        <button id="hard" class="hard button">Hard</button>
+        <button id="easy" class="easy button">
+            <span class="name">Easy</span>
+            <br>
+            <span class="details">9 x 9 &bull; 10 mines</span>
+        </button>
+        <button id="medium" class="medium button">
+            <span class="name">Medium</span>
+            <br>
+            <span class="details">16 x 16 &bull; 40 mines</span>
+        </button>
+        <button id="hard" class="hard button">
+            <span class="name">Hard</span>
+            <br>
+            <span class="details">30 x 16 &bull; 99 mines</span>
+        </button>
     </div>
 
     <div class="game-section">
-        <div class="extras">
-            <button id="restart" class="restart button">Restart</button>
-            <p>Time: 00:00</p>
+        <div class="hud">
+            <div class="minesLeft">Mines: 10</div>
+            <div class="status"></div>
+            <div class="hud-buttons">
+                <button id="reset-button">Reset</button>
+                <button id="menu-button">Menu</button>
+            </div>
         </div>
-        
-        <div id="game-board"></div>
+        <div id="board"></div>
     </div>
-    
+
 </body>
+
 </html>
