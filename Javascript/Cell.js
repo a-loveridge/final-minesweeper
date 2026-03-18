@@ -6,6 +6,7 @@ export class Cell {
     this.surroundingMines = 0;
     this.isRevealed = false;
     this.isFlagged = false;
+    this.pokemon = null;
   }
 
   setMine() {
@@ -27,17 +28,21 @@ export class Cell {
     
   }
 
+  setPokemon(pokemonObj) {
+    this.pokemon = pokemonObj;
+  }
+
   getDisplayValue() {
     if (this.isFlagged) {
-      return "🚩";
+      return "pokeball"; // placeholder image
     }
 
     if (!this.isRevealed) {
-      return "";
+      return "grass"; // grass placeholder
     }
 
     if (this.isMine) {
-      return "*";
+      return "pokemon";
     }
 
     if (this.surroundingMines > 0) {

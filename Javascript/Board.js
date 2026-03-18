@@ -2,16 +2,18 @@
 import { Cell } from "./Cell.js";
 
 export class Board {
-  constructor(size, mineCount) {
-    this.size = size;
+  constructor(rows, cols, mineCount) {
+    this.rows = rows;
+    this.cols = cols;
     this.mineCount = mineCount;
     this.board = [];
+    this.revealedCount = 0;
   }
 
   initialiseBoard() {
-    for (let r = 0; r < this.size; r++) {
+    for (let r = 0; r < this.rows; r++) {
       this.board[r] = [];
-      for (let c = 0; c < this.size; c++) {
+      for (let c = 0; c < this.cols; c++) {
         this.board[r][c] = new Cell();
       }
     }
@@ -21,12 +23,26 @@ export class Board {
     let minesPlaced = 0;
 
     while (minesPlaced < this.mineCount) {
-      let r = this.getRandomInt(this.size);
-      let c = this.getRandomInt(this.size);
+      let r = this.getRandomInt(this.rows);
+      let c = this.getRandomInt(this.cols);
 
       if (!this.board[r][c].isMine) {
         this.board[r][c].setMine();
         minesPlaced++;
+      }
+    }
+  }
+
+  assignPokemon(pokemonList) {
+    let pokemonIndex = 0;
+
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
+        let cell = this.board[r][c];
+        if (cell.isMine) {
+          cell.setPokemon(pokemonList[pokemonIndex]);
+          pokemonIndex++; // this way each mine gets a unique pokemon set to it
+        }
       }
     }
   }
@@ -38,35 +54,27 @@ export class Board {
 
   surroundingMineCount() {
     // 8 possible directions where a mine could be found
-    const x = [-1, -1, -1, 0, 0, 1, 1, 1];
-    const y = [-1, 0, 1, -1, 1, -1, 0, 1];
+    const directions = [
+      [-1,-1], [-1,0], [-1,1],
+      [0,-1],          [1,0],
+      [1,-1], [1, 0], [1,1]
+    ];
 
-    for (let r = 0; r < this.size; r++) {
-      for (let c = 0; c < this.size; c++) {
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
         if (this.board[r][c].isMine) {
           continue;
         }
 
-        const mineCount = 0;
+        let mineCount = 0;
         // looping through each direction
-        for (let i = 0; i < 8; i++) {
-          const newRow = r + x[i];
-          const newCol = c + y[i];
-
-          // checking if surrounding cells are in bounds and if there are mines
-          if (
-            newRow >= 0 &&
-            newRow < this.size &&
-            newCol >= 0 &&
-            newCol < this.size
-          ) {
-            // if a surrounding cell is a mine, add one to the mine count for the middle cell
-            if (this.board[newRow][newCol].isMine) {
-              mineCount++;
-            }
+        for (const [dr,dc] of directions) {
+          const newRow = r + dr;
+          const newCol = c + dc;
+          if (this.isInBounds(newRow, newCol) && this.board[newRow][newCol].isMine) {
+            mineCount++;
           }
         }
-
         this.board[r][c].setSurroundingMines(mineCount);
       }
     }
@@ -74,25 +82,62 @@ export class Board {
 
   revealCell(row, col) {
     // checking bounds of board
-    if (row < 0 || row >= this.size || col < 0 || col >= this.size) {
-        return;
+    if (!this.isInBounds(row, col)) {
+      return;
     }
 
-    let cell = new Cell();
-    cell = this.board[row][col];
+    const cell = this.board[row][col];
 
     // cells cannot be revealed once they are flagged
     if (cell.isFlagged || cell.isRevealed) {
-        return;
+      return;
     }
 
     cell.reveal();
-    cell.getDisplayValue();
+    this.revealedCount++;
 
+    // flood/recursive fill: if no surrounding mines, reveal all 8 spaces
+    if (!cell.isMine && cell.surroundingMines === 0) {
+      const directions = [
+        [-1, -1], [-1, 0], [-1, 1],
+        [0, -1],           [0, 1],
+        [1, -1],  [1, 0],  [1, 1],
+      ];
+
+      for (const [dr,dc] of directions) {
+        const neighborRow = row + dr;
+        const neighborCol = col + dc;
+        if (this.isInBounds(neighborRow, neighborCol) && !this.board[neighborRow][neighborCol].isMine) {
+          this.revealCell(neighborRow, neighborCol);
+        }
+      }
+    }
+  }
+
+  // for states in the game when the board is revealed
+  revealAllMines() {
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
+        if (this.board[r][c].isMine) {
+          this.board[r][c].reveal();
+        }
+      }
+    }
+  }
+
+  // win condition
+  checkWin() {
+    const totalCells = this.rows * this.cols;
+    return this.revealedCount === totalCells - this.mineCount;
   }
 
   // method that checks if the cell is in bounds - accessed outside of this script
   isInBounds(row, col) {
-    return row >= 0 && row < this.size && col >= 0 && col < this.size;
+    return row >= 0 && row < this.rows && col >= 0 && col < this.cols;
+  }
+
+  // convenience getter used by other scripts
+  getCell(row, col) {
+    return this.board[row][col];
   }
 }
