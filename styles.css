@@ -184,20 +184,3 @@ h1 {
     overflow: hidden;
     white-space: nowrap;
 }
-
-/* .cell-image {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    image-rendering: pixelated; /* keeps pixel art sprites crisp */
-/* }
-  
-  .pokemon-name {
-    font-size: 0.3rem;
-    color: #ffffff;
-    text-align: center;
-    margin-top: 1px;
-    text-transform: capitalize;
-    overflow: hidden;
-    white-space: nowrap;
-  } */
