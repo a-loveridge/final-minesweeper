@@ -37,11 +37,11 @@ export function renderBoard(board, onLeftClick, onRightClick) {
 
       if (displayValue === "grass") {
         // unrevealed cell
-        const img = createImg("../Images/grass.png", "grass");
+        const img = createImg("Images/grass.png", "grass");
         button.appendChild(img);
       } else if (displayValue === "pokeball") {
         // flagged cell
-        const img = createImg("../Images/pokeball.png", "pokeball");
+        const img = createImg("Images/pokeball.png", "pokeball");
         button.appendChild(img);
       } else if (displayValue === "pokemon") {
         // revealed mine
