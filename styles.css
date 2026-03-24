@@ -1,18 +1,203 @@
-#board {
-    display: grid;
-    /* Default for easy right now - will edit once logic working */
-    grid-template-columns: repeat(9, 40px);
-    grid-template-rows: repeat(9, 40px);
+/* Font import */
+.press-start-2p-regular {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
 
-.cell {
-    border: 1px solid black;
+:root {
+    --poke-yellow: #ffcb05;
+}
+
+/* General styles */
+
+body {
+    font-family: "Press Start 2P";
+    background-color: #1a1a2e;
+    color: white;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--poke-yellow);
+}
+
+/* Starting Menu */
+.game-select {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-select h2 {
+    font-size: 20px;
+    margin-bottom: 1rem;
+}
+
+.button {
+    width: 220px;
+    padding: 1rem;
+    border: 3px solid white;
+    border-radius: 10px;
+    background-color: #262643;
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    transition: 0.3s ease;
+}
+
+.button:hover {
+    background-color: #2a2a4b;
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: 0.3s ease;
+}
+
+.easy {
+    border-color: greenyellow;
+}
+
+.medium {
+    border-color: orange;
+}
+
+.hard {
+    border-color: red;
+}
+
+/* Game HUD */
+.game-section {
+    display: none;
+    /* hidden until game mode selected */
+    flex-direction: column;
+    align-items: center;
+}
+
+.hud {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    padding: 1rem 1.5rem;
+    background-color: #262643;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.status {
+    text-align: center;
+    flex: 1;
+    padding: 0 1rem;
+}
+
+.hud-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.hud-buttons button {
+    padding: .5rem 1rem;
+    background-color: rgb(83, 118, 192);
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 13px;
+    transition: 0.3s ease;
+}
+
+.hud-buttons button:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    background-color: rgb(105, 141, 219);
+}
+
+/* Board */
+#board {
+    display: grid;
+    gap: 2px;
+}
+
+
+.cell {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgb(83, 118, 192);
+    border-radius: 5px;
+    background-color: #262643;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: 0.3s ease;
+    overflow: hidden;
+    padding: 0;
+    color: white;
+    font-family: inherit;
 }
 
 .cell:hover {
     cursor: pointer;
-    background-color: grey;
+    background-color: #35355d;
 }
+
+.cell:hover:not(:disabled) {
+    background-color: #4d6db2;
+}
+
+.cell:disabled {
+    cursor: default;
+}
+
+.cell.revealed {
+    background-color: #0f3460;
+    border-color: #1a1a2e;
+}
+
+.cell.revealed-mine {
+    background-color: #7b1010;
+    border-color: #f44336;
+}
+
+.cell-image {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.pokemon-name {
+    font-size: 5px;
+    color: white;
+    font-family: inherit;
+    text-align: center;
+    margin-top: 1px;
+    text-transform: capitalize;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* .cell-image {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    image-rendering: pixelated; /* keeps pixel art sprites crisp */
+  /* }
+  
+  .pokemon-name {
+    font-size: 0.3rem;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 1px;
+    text-transform: capitalize;
+    overflow: hidden;
+    white-space: nowrap;
+  } */ 

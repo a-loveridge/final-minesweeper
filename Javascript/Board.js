@@ -131,7 +131,7 @@ export class Board {
     return this.revealedCount === totalCells - this.mineCount;
   }
 
-  // method that checks if the cell is in bounds - accessed outside of this script
+  // method that checks if the cell is in bounds - accessed in and out of this script
   isInBounds(row, col) {
     return row >= 0 && row < this.rows && col >= 0 && col < this.cols;
   }
