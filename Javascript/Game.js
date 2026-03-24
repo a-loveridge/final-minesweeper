@@ -61,6 +61,11 @@ function onLeftClick(row, col) {
     }
 
     const cell = currentBoard.getCell(row, col);
+
+    if (cell.isFlagged){
+        return;
+    }
+
     if (cell.isMine) {
         cell.reveal();
         currentBoard.revealAllMines();

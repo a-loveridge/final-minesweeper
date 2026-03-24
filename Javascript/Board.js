@@ -56,7 +56,7 @@ export class Board {
     // 8 possible directions where a mine could be found
     const directions = [
       [-1,-1], [-1,0], [-1,1],
-      [0,-1],          [1,0],
+      [0,-1],          [0,1],
       [1,-1], [1, 0], [1,1]
     ];
 
