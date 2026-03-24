@@ -23,9 +23,8 @@ export class Cell {
 
   toggleFlag() {
     if (!this.isRevealed) {
-        this.isFlagged = !this.isFlagged;
+      this.isFlagged = !this.isFlagged;
     }
-    
   }
 
   setPokemon(pokemonObj) {

@@ -1,59 +1,57 @@
 "use strict";
 
 export class Pokemon {
-    constructor(count) {
-        this.count = count; // = mineCount
-        this.pokemon = [];
+  constructor(count) {
+    this.count = count; // = mineCount
+    this.pokemon = [];
+  }
+
+  // generates random pokemon id between 1 and 151 (using gen 1 pokemon only)
+  generateRandomID() {
+    const ids = new Set(); // somewhere to store the values - read up on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+
+    while (ids.size < this.count) {
+      ids.add(Math.floor(Math.random() * 151) + 1);
     }
 
-    // generates random pokemon id between 1 and 151 (using gen 1 pokemon only)
-    generateRandomID() {
-        const ids = new Set(); // somewhere to store the values - read up on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+    // using a set ensures no duplicate pokemon on the board
+    return Array.from(ids);
+  }
 
-        while (ids.size < this.count) {
-            ids.add(Math.floor(Math.random() * 151) + 1);
-        }
+  // fetches a single pokemon by id and returns name and sprite
+  async fetchPokemon(id) {
+    const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
 
-        // using a set ensures no duplicate pokemon on the board
-        return Array.from(ids);
+    if (!resp.ok) {
+      throw new Error(`Failed to fetch pokemon with id ${id}`);
     }
 
-    // fetches a single pokemon by id and returns name and sprite
-    async fetchPokemon(id) {
-        const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
+    const data = await resp.json();
 
-        if (!resp.ok) {
-            throw new Error(`Failed to fetch pokemon with id ${id}`);
-        }
+    return {
+      name: data.name,
+      sprite: data.sprites.front_default,
+    };
+  }
 
-        const data = await resp.json();
+  // fetches pokemon for the game
+  async fetchAll() {
+    const ids = this.generateRandomID();
 
-        return {
-            name: data.name,
-            sprite: data.sprites.front_default
-        };
+    for (const id of ids) {
+      try {
+        const pokemon = await this.fetchPokemon(id);
+        this.pokemon.push(pokemon);
+      } catch (error) {
+        // if one fetch fails push a fallback so the game doesn't break
+        console.error(error);
+        this.pokemon.push({
+          name: "unknown",
+          sprite: "..Images/pokeball.png",
+        });
+      }
     }
 
-    // fetches pokemon for the game
-    async fetchAll() {
-        const ids = this.generateRandomID();
-
-        for (const id of ids) {
-            try {
-                const pokemon = await this.fetchPokemon(id);
-                this.pokemon.push(pokemon);
-            } catch (error){
-                // if one fetch fails push a fallback so the game doesn't break
-                console.error(error);
-                this.pokemon.push ({
-                    name: "unknown",
-                    sprite: "..\Images/pokeball.png"
-                });
-            }
-        }
-
-        return this.pokemon;
-    }
-
-
+    return this.pokemon;
+  }
 }

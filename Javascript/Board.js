@@ -55,9 +55,14 @@ export class Board {
   surroundingMineCount() {
     // 8 possible directions where a mine could be found
     const directions = [
-      [-1,-1], [-1,0], [-1,1],
-      [0,-1],          [0,1],
-      [1,-1], [1, 0], [1,1]
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [0, -1],
+      [0, 1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
     ];
 
     for (let r = 0; r < this.rows; r++) {
@@ -68,10 +73,13 @@ export class Board {
 
         let mineCount = 0;
         // looping through each direction
-        for (const [dr,dc] of directions) {
+        for (const [dr, dc] of directions) {
           const newRow = r + dr;
           const newCol = c + dc;
-          if (this.isInBounds(newRow, newCol) && this.board[newRow][newCol].isMine) {
+          if (
+            this.isInBounds(newRow, newCol) &&
+            this.board[newRow][newCol].isMine
+          ) {
             mineCount++;
           }
         }
@@ -99,15 +107,23 @@ export class Board {
     // flood/recursive fill: if no surrounding mines, reveal all 8 spaces
     if (!cell.isMine && cell.surroundingMines === 0) {
       const directions = [
-        [-1, -1], [-1, 0], [-1, 1],
-        [0, -1],           [0, 1],
-        [1, -1],  [1, 0],  [1, 1],
+        [-1, -1],
+        [-1, 0],
+        [-1, 1],
+        [0, -1],
+        [0, 1],
+        [1, -1],
+        [1, 0],
+        [1, 1],
       ];
 
-      for (const [dr,dc] of directions) {
+      for (const [dr, dc] of directions) {
         const neighborRow = row + dr;
         const neighborCol = col + dc;
-        if (this.isInBounds(neighborRow, neighborCol) && !this.board[neighborRow][neighborCol].isMine) {
+        if (
+          this.isInBounds(neighborRow, neighborCol) &&
+          !this.board[neighborRow][neighborCol].isMine
+        ) {
           this.revealCell(neighborRow, neighborCol);
         }
       }

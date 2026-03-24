@@ -190,7 +190,7 @@ h1 {
     height: 32px;
     object-fit: contain;
     image-rendering: pixelated; /* keeps pixel art sprites crisp */
-  /* }
+/* }
   
   .pokemon-name {
     font-size: 0.3rem;
@@ -200,4 +200,4 @@ h1 {
     text-transform: capitalize;
     overflow: hidden;
     white-space: nowrap;
-  } */ 
+  } */

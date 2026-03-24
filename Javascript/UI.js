@@ -13,9 +13,9 @@ export function hideDifficultyMenu() {
 }
 
 export function showLoadingMessage(message) {
-    const boardDiv = document.getElementById("board");
-    boardDiv.innerHTML = "";
-    boardDiv.textContent = message;
+  const boardDiv = document.getElementById("board");
+  boardDiv.innerHTML = "";
+  boardDiv.textContent = message;
 }
 
 // renders the board - called every time game state changes
